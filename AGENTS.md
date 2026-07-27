@@ -43,10 +43,13 @@ multiple sessions.
    |-- src/
    |   `-- quantlab/
    |       |-- __init__.py
-   |       |-- data/          (future: exchange connectors, data loading/caching)
-   |       |-- indicators/    (future: signal/indicator logic)
-   |       |-- strategies/    (future: strategy definitions)
-   |       |-- backtest/      (future: vectorbt simulation wrappers)
+   |       |-- data/          (Binance historical OHLCV fetching + caching)
+   |       |-- indicators/    (trend and momentum indicators, wrapping vectorbt)
+   |       |-- strategies/    (strategy signal generation, e.g. SMA crossover)
+   |       |-- backtest/      (vectorbt Portfolio simulation wrapper + metrics)
+   |       |-- screening/     (parameter sensitivity sweeps across a strategy's
+   |                          parameter grid; in-sample exploratory only, not
+   |                          validation)
    |       `-- validation/    (future: walk-forward + Monte Carlo validation)
    |-- tests/
    |   `-- ...                (mirrors src/quantlab/, one test file per module)
