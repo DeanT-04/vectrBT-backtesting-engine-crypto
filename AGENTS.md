@@ -101,6 +101,9 @@ so they survive across chat windows with no shared memory. When a layer is
 deferred, add an item here. When it's later built, remove its entry.
 
 Current backlog:
+- Expand extract_metrics() in src/quantlab/backtest/engine.py with
+  additional metrics (e.g. Sortino ratio, Calmar ratio, profit factor,
+  drawdown duration) once a future validation layer needs them.
 - Expand indicator suite beyond SMA/EMA/RSI (e.g. MACD, Bollinger Bands,
   ATR, Stochastic) using the same vectorbt-wrapper pattern established in
   src/quantlab/indicators, once needed by a specific strategy.
