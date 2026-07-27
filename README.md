@@ -1,45 +1,41 @@
-<div align="center">
-  <img src="docs/assets/banner_v2.jpg" alt="QuantLab Banner" width="850" style="max-width: 100%; border-radius: 12px; margin-bottom: 20px;" />
+<p align="center">
+  <img src="docs/assets/banner_v3.jpg" alt="QuantLab Banner" width="100%" />
+</p>
 
-  <br />
+<h1 align="center">QuantLab ⚡</h1>
 
-  <img src="docs/assets/logo_v2.jpg" alt="QuantLab Logo" width="140" height="140" style="border-radius: 28px; box-shadow: 0 8px 24px rgba(0,0,0,0.25);" />
+<p align="center">
+  <b>High-Performance Vectorised Cryptocurrency Quantitative Backtesting Engine</b>
+</p>
 
-  <h1>QuantLab ⚡</h1>
+<p align="center">
+  <i>Accelerated by <code>vectorbt</code> & Powered by Binance Historical Market Data</i>
+</p>
 
-  <p>
-    <b>High-Performance Vectorized Cryptocurrency Quantitative Backtesting Engine</b>
-  </p>
+<p align="center">
+  <a href="https://python.org"><img src="https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.11+"></a>
+  <a href="https://vectorbt.dev"><img src="https://img.shields.io/badge/Engine-vectorbt%20v1.1+-FF6F00?style=for-the-badge&logo=python&logoColor=white" alt="vectorbt"></a>
+  <a href="https://binance.com"><img src="https://img.shields.io/badge/Data-Binance%20CCXT-F3BA2F?style=for-the-badge&logo=binance&logoColor=black" alt="Binance Data"></a>
+  <a href="https://astral.sh/uv"><img src="https://img.shields.io/badge/Package%20Manager-uv-DE5FE9?style=for-the-badge&logo=astral&logoColor=white" alt="uv"></a>
+  <a href="https://pytest.org"><img src="https://img.shields.io/badge/Tests-33%20Passed-0A9EDC?style=for-the-badge&logo=pytest&logoColor=white" alt="Pytest"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License"></a>
+</p>
 
-  <p>
-    <i>Accelerated by <code>vectorbt</code> & Powered by Binance Historical Market Data</i>
-  </p>
-
-  <p>
-    <a href="https://python.org"><img src="https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.11+"></a>
-    <a href="https://vectorbt.dev"><img src="https://img.shields.io/badge/Engine-vectorbt%20v1.1+-FF6F00?style=for-the-badge&logo=python&logoColor=white" alt="vectorbt"></a>
-    <a href="https://binance.com"><img src="https://img.shields.io/badge/Data-Binance%20CCXT-F3BA2F?style=for-the-badge&logo=binance&logoColor=black" alt="Binance Data"></a>
-    <a href="https://astral.sh/uv"><img src="https://img.shields.io/badge/Package%20Manager-uv-DE5FE9?style=for-the-badge&logo=astral&logoColor=white" alt="uv"></a>
-    <a href="https://pytest.org"><img src="https://img.shields.io/badge/Tests-33%20Passed-0A9EDC?style=for-the-badge&logo=pytest&logoColor=white" alt="Pytest"></a>
-    <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License"></a>
-  </p>
-
-  <p>
-    <a href="#-key-features"><b>Features</b></a> •
-    <a href="#%EF%B8%8F-system-architecture"><b>Architecture</b></a> •
-    <a href="#-quick-start"><b>Quick Start</b></a> •
-    <a href="#-demo-executions--reports"><b>Demos & Reports</b></a> •
-    <a href="#-code-api-example"><b>Code API</b></a> •
-    <a href="#-project-structure"><b>Project Structure</b></a> •
-    <a href="#%EF%B8%8F-roadmap--backlog"><b>Roadmap</b></a>
-  </p>
-</div>
+<p align="center">
+  <a href="#-key-features"><b>Features</b></a> •
+  <a href="#%EF%B8%8F-system-architecture"><b>Architecture</b></a> •
+  <a href="#-quick-start"><b>Quick Start</b></a> •
+  <a href="#-demo-executions--reports"><b>Demos & Reports</b></a> •
+  <a href="#-code-api-example"><b>Code API</b></a> •
+  <a href="#-project-structure"><b>Project Structure</b></a> •
+  <a href="#%EF%B8%8F-roadmap--backlog"><b>Roadmap</b></a>
+</p>
 
 ---
 
 ## 📌 Overview
 
-**QuantLab** is an institutional-grade, vectorized quantitative backtesting system engineered for cryptocurrency strategy research. Built on top of **`vectorbt`** and powered by **`ccxt`** Binance data pipelines, QuantLab enables quantitative analysts and algorithmic traders to backtest, sweep, and screen strategy parameters across thousands of historical price candles in milliseconds.
+**QuantLab** is an institutional-grade, vectorised quantitative backtesting system engineered for cryptocurrency strategy research. Built on top of **`vectorbt`** and powered by **`ccxt`** Binance data pipelines, QuantLab enables quantitative analysts and algorithmic traders to backtest, sweep, and screen strategy parameters across thousands of historical price candles in milliseconds.
 
 > [!NOTE]
 > Historical market data is fetched directly from **Binance** (chosen for superior historical depth and data quality) and cached locally in compressed **Apache Parquet** format. Execution layers (such as live/paper-trading via Bybit) are strictly decoupled and reserved for post-validation deployment.
@@ -50,22 +46,22 @@
 
 | Feature | Description | Tech Stack |
 | :--- | :--- | :--- |
-| 🪙 **Historical Market Data Engine** | Automated downloading, sanitization, and nanosecond Parquet disk caching for any Binance trading pair and timeframe. | `ccxt`, `pandas`, `pyarrow` |
-| ⚡ **Vectorized Indicators** | High-speed calculation of Simple Moving Averages (SMA), Exponential Moving Averages (EMA), and Relative Strength Index (RSI). | `vectorbt`, `numpy` |
+| 🪙 **Historical Market Data Engine** | Automated downloading, sanitisation, and nanosecond Parquet disk caching for any Binance trading pair and timeframe. | `ccxt`, `pandas`, `pyarrow` |
+| ⚡ **Vectorised Indicators** | High-speed calculation of Simple Moving Averages (SMA), Exponential Moving Averages (EMA), and Relative Strength Index (RSI). | `vectorbt`, `numpy` |
 | 🎯 **Strategy Signal Generation** | Strict lookahead-free signal matrices for fast/slow moving average crossovers with exact index validation. | `quantlab.strategies` |
-| 📈 **Portfolio Simulation Wrapper** | Full portfolio accounting including initial cash, custom fee rates (e.g. 0.1%), and trade slippage (e.g. 0.1%). | `vbt.Portfolio` |
-| 🔍 **Parameter Sensitivity Sweeps** | Multi-dimensional grid screening to analyze return surfaces, Sharpe ratios, win rates, and maximum drawdowns. | `quantlab.screening` |
+| 📈 **Portfolio Simulation Wrapper** | Full portfolio accounting including initial cash, custom fee rates (e.g. 0.1%), trade slippage (e.g. 0.1%), and trade modelling. | `vbt.Portfolio` |
+| 🔍 **Parameter Sensitivity Sweeps** | Multi-dimensional grid screening to analyse return surfaces, Sharpe ratios, win rates, and maximum drawdowns. | `quantlab.screening` |
 | 📦 **Next-Gen Environment** | Built exclusively with `uv` for reproducible, lightning-fast virtual environment resolution and execution. | `uv` |
 
 ---
 
 ## 🏗️ System Architecture
 
-QuantLab utilizes a decoupled modular pipeline architecture. Market data flows downwards through vectorized calculation layers into backtesting portfolio simulation and parameter screening engines.
+QuantLab utilises a decoupled modular pipeline architecture. Market data flows downwards through vectorised calculation layers into backtesting portfolio simulation and parameter screening engines.
 
-<div align="center">
-  <img src="docs/assets/workflow_v2.jpg" alt="QuantLab Architecture Workflow" width="850" style="max-width: 100%; border-radius: 12px;" />
-</div>
+<p align="center">
+  <img src="docs/assets/workflow_v3.jpg" alt="QuantLab Architecture Workflow" width="100%" />
+</p>
 
 <br />
 
@@ -82,7 +78,7 @@ flowchart TD
         F --> D
     end
 
-    subgraph Indicators["2. Vectorized Indicators"]
+    subgraph Indicators["2. Vectorised Indicators"]
         D --> G["quantlab.indicators.trend (SMA / EMA)"]
         D --> H["quantlab.indicators.momentum (RSI)"]
     end
@@ -90,7 +86,7 @@ flowchart TD
     subgraph Signals["3. Signal Generation"]
         G --> I["quantlab.strategies.sma_crossover"]
         H --> I
-        I -->|"Vectorized Crossover Logic"| J["Entries & Exits Boolean Series"]
+        I -->|"Vectorised Crossover Logic"| J["Entries & Exits Boolean Series"]
     end
 
     subgraph Simulation["4. Backtest & Screening Engine"]
@@ -253,7 +249,7 @@ portfolio = run_backtest(
     slippage=0.001   # 0.1% slippage
 )
 
-# 4. Extract standardized metrics
+# 4. Extract standardised metrics
 metrics = extract_metrics(portfolio)
 
 print(f"Total Return: {metrics['total_return'] * 100:.2f}%")
@@ -268,7 +264,7 @@ print(f"Win Rate:     {metrics['win_rate'] * 100:.2f}%")
 
 ```text
 quantlab/
-├── AGENTS.md                 # Agent behavior rules, scope boundaries, and guidelines
+├── AGENTS.md                 # Agent behaviour rules, scope boundaries, and guidelines
 ├── .env.example              # Environment variable templates
 ├── .gitignore                # Git ignore rules for cached parquet data and venvs
 ├── pyproject.toml            # Project configuration, metadata, and dependencies
@@ -278,7 +274,7 @@ quantlab/
 ├── data/                     # Local parquet cache directory (gitignored)
 ├── src/
 │   └── quantlab/
-│       ├── __init__.py       # Package initialization
+│       ├── __init__.py       # Package initialisation
 │       ├── data/
 │       │   ├── __init__.py
 │       │   └── ohlcv.py      # Binance historical data downloader & parquet cacher
@@ -312,16 +308,16 @@ quantlab/
 ## 🗺️ Roadmap & Backlog
 
 - [x] **Data Engine**: Binance historical OHLCV fetcher with local Apache Parquet caching (`ccxt` + `pyarrow`).
-- [x] **Indicator Suite**: Vectorized wrappers for SMA, EMA, and RSI (`vectorbt`).
+- [x] **Indicator Suite**: Vectorised wrappers for SMA, EMA, and RSI (`vectorbt`).
 - [x] **Strategy Module**: Lookahead-safe SMA Crossover signal generator.
-- [x] **Backtest Engine**: Vectorized Portfolio simulation with fee (0.1%) and slippage (0.1%) accounting.
+- [x] **Backtest Engine**: Vectorised Portfolio simulation with fee (0.1%) and slippage (0.1%) accounting.
 - [x] **Exploratory Screening**: Full parameter grid sensitivity sweeps.
 - [x] **Visual Documentation**: Custom high-res logo, hero banner, workflow diagram, and GitHub README design.
 - [ ] **Extended Metrics**: Expand `extract_metrics()` with Sortino ratio, Calmar ratio, profit factor, and drawdown duration.
 - [ ] **Expanded Indicator Suite**: Add MACD, Bollinger Bands, ATR, and Stochastic indicators.
 - [ ] **Incremental Cache**: Partial cache updates for fetching missing day ranges without full redownload.
 - [ ] **Validation Harness**: Walk-forward validation harness (rolling training windows, out-of-sample testing).
-- [ ] **Monte Carlo Simulation**: Return sequence randomization and trade boot-strapping.
+- [ ] **Monte Carlo Simulation**: Return sequence randomisation and trade boot-strapping.
 - [ ] **Bybit Execution Layer**: Live & paper trading connector (post-strategy validation).
 
 ---
