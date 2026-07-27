@@ -62,6 +62,27 @@ multiple sessions.
 - Run the full suite with `uv run pytest` before ending any task.
 - A task is not complete until the full suite passes with zero failures.
 
+## Completion Reporting Format
+At the end of every task, report back using exactly this structure:
+
+- **Files created:** bullet list of new files, each with a one-line purpose
+- **Files modified:** bullet list of edited files, each with a one-line
+  description of what changed
+- **Tests added:** bullet list of new test cases, each with a one-line
+  description of what it verifies
+- **Test run output:** the full, verbatim output of `uv run pytest`
+- **Scope check:** explicit confirmation that no files or folders were
+  created outside what the current prompt specified, and that no unrelated
+  code was modified
+- **Assumptions made:** bullet list of any judgment calls made where the
+  prompt didn't fully specify something (e.g. a chosen exception type, a
+  naming choice) — even small ones
+- **Open items:** anything noticed but not acted on because it was out of
+  scope for this task (edge cases, potential issues, follow-up ideas)
+
+If a task could not be fully completed, use this same structure but state
+clearly what is blocking completion instead of a Test run output.
+
 ## Strategy Testing Mode
 This entire section only applies when the user's message begins with the
 exact literal text "@strategy" as the very first characters of the prompt.
