@@ -1,39 +1,39 @@
-<p align="center">
-  <img src="docs/assets/banner.jpg" alt="QuantLab Banner" width="100%" />
-</p>
+<div align="center">
+  <img src="docs/assets/banner.jpg" alt="QuantLab Banner" width="850" style="max-width: 100%; border-radius: 12px; margin-bottom: 20px;" />
 
-<p align="center">
-  <img src="docs/assets/logo.jpg" alt="QuantLab Logo" width="130" style="border-radius: 20px;" />
-</p>
+  <br />
 
-<h1 align="center">QuantLab ⚡</h1>
+  <img src="docs/assets/logo.jpg" alt="QuantLab Logo" width="140" height="140" style="border-radius: 28px; box-shadow: 0 8px 24px rgba(0,0,0,0.25);" />
 
-<p align="center">
-  <b>High-Performance Vectorized Cryptocurrency Quantitative Backtesting Engine</b>
-</p>
+  <h1>QuantLab ⚡</h1>
 
-<p align="center">
-  <i>Accelerated by <code>vectorbt</code> & Powered by Binance Historical OHLCV Data</i>
-</p>
+  <p>
+    <b>High-Performance Vectorized Cryptocurrency Quantitative Backtesting Engine</b>
+  </p>
 
-<p align="center">
-  <a href="https://python.org"><img src="https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.11+"></a>
-  <a href="https://vectorbt.dev"><img src="https://img.shields.io/badge/Engine-vectorbt%20v1.1+-FF6F00?style=for-the-badge&logo=python&logoColor=white" alt="vectorbt"></a>
-  <a href="https://binance.com"><img src="https://img.shields.io/badge/Data-Binance%20CCXT-F3BA2F?style=for-the-badge&logo=binance&logoColor=black" alt="Binance Data"></a>
-  <a href="https://astral.sh/uv"><img src="https://img.shields.io/badge/Package%20Manager-uv-DE5FE9?style=for-the-badge&logo=astral&logoColor=white" alt="uv"></a>
-  <a href="https://pytest.org"><img src="https://img.shields.io/badge/Tests-33%20Passed-0A9EDC?style=for-the-badge&logo=pytest&logoColor=white" alt="Pytest"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License"></a>
-</p>
+  <p>
+    <i>Accelerated by <code>vectorbt</code> & Powered by Binance Historical Market Data</i>
+  </p>
 
-<p align="center">
-  <a href="#-key-features"><b>Features</b></a> •
-  <a href="#%EF%B8%8F-system-architecture"><b>Architecture</b></a> •
-  <a href="#-quick-start"><b>Quick Start</b></a> •
-  <a href="#-demo-executions--reports"><b>Demos & Reports</b></a> •
-  <a href="#-code-api-example"><b>Code API</b></a> •
-  <a href="#-project-structure"><b>Project Structure</b></a> •
-  <a href="#%EF%B8%8F-roadmap--backlog"><b>Roadmap</b></a>
-</p>
+  <p>
+    <a href="https://python.org"><img src="https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.11+"></a>
+    <a href="https://vectorbt.dev"><img src="https://img.shields.io/badge/Engine-vectorbt%20v1.1+-FF6F00?style=for-the-badge&logo=python&logoColor=white" alt="vectorbt"></a>
+    <a href="https://binance.com"><img src="https://img.shields.io/badge/Data-Binance%20CCXT-F3BA2F?style=for-the-badge&logo=binance&logoColor=black" alt="Binance Data"></a>
+    <a href="https://astral.sh/uv"><img src="https://img.shields.io/badge/Package%20Manager-uv-DE5FE9?style=for-the-badge&logo=astral&logoColor=white" alt="uv"></a>
+    <a href="https://pytest.org"><img src="https://img.shields.io/badge/Tests-33%20Passed-0A9EDC?style=for-the-badge&logo=pytest&logoColor=white" alt="Pytest"></a>
+    <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License"></a>
+  </p>
+
+  <p>
+    <a href="#-key-features"><b>Features</b></a> •
+    <a href="#%EF%B8%8F-system-architecture"><b>Architecture</b></a> •
+    <a href="#-quick-start"><b>Quick Start</b></a> •
+    <a href="#-demo-executions--reports"><b>Demos & Reports</b></a> •
+    <a href="#-code-api-example"><b>Code API</b></a> •
+    <a href="#-project-structure"><b>Project Structure</b></a> •
+    <a href="#%EF%B8%8F-roadmap--backlog"><b>Roadmap</b></a>
+  </p>
+</div>
 
 ---
 
@@ -63,46 +63,49 @@
 
 QuantLab utilizes a decoupled modular pipeline architecture. Market data flows downwards through vectorized calculation layers into backtesting portfolio simulation and parameter screening engines.
 
-<p align="center">
-  <img src="docs/assets/workflow.jpg" alt="QuantLab Architecture Workflow" width="100%" />
-</p>
+<div align="center">
+  <img src="docs/assets/workflow.jpg" alt="QuantLab Architecture Workflow" width="850" style="max-width: 100%; border-radius: 12px;" />
+</div>
 
-### 🔄 Data & Execution Flow (Mermaid)
+<br />
+
+### 🔄 Data & Execution Flow Diagram
 
 ```mermaid
 flowchart TD
-    subgraph Data Pipeline ["1. Market Data Pipeline"]
-        A[Binance Exchange API] -->|CCXT API Request| B[ohlcv.py / get_ohlcv]
-        B -->|Check Disk Cache| C{Parquet Exists?}
-        C -->|Yes| D[Load Parquet File]
-        C -->|No| E[Paginate OHLCV Batches]
-        E -->|Save Parquet| F[Local Cache: data/*.parquet]
+    subgraph Data["1. Market Data Pipeline"]
+        A["Binance Exchange API"] -->|"CCXT Fetch"| B["ohlcv.py / get_ohlcv"]
+        B -->|"Check Disk Cache"| C{"Parquet Exists?"}
+        C -->|"Yes"| D["Load Parquet Data"]
+        C -->|"No"| E["Paginate OHLCV Batches"]
+        E -->|"Save Parquet"| F["Local Cache: data/*.parquet"]
         F --> D
     end
 
-    subgraph Indicator Engine ["2. Vectorized Indicators"]
+    subgraph Indicators["2. Vectorized Indicators"]
         D --> G["quantlab.indicators.trend (SMA / EMA)"]
         D --> H["quantlab.indicators.momentum (RSI)"]
     end
 
-    subgraph Strategy Layer ["3. Signal Generation"]
+    subgraph Signals["3. Signal Generation"]
         G --> I["quantlab.strategies.sma_crossover"]
-        I -->|Shift & Vector Logic| J[Entries & Exits Boolean Series]
+        H --> I
+        I -->|"Vectorized Crossover Logic"| J["Entries & Exits Boolean Series"]
     end
 
-    subgraph Simulation & Screening ["4. Backtest & Screening Engine"]
+    subgraph Simulation["4. Backtest & Screening Engine"]
         J --> K["quantlab.backtest.engine / run_backtest"]
         D --> K
-        K -->|VectorBT Portfolio| L[extract_metrics]
-        L --> M[Total Return / Sharpe / Max Drawdown / Win Rate]
+        K -->|"VectorBT Portfolio"| L["extract_metrics"]
+        L --> M["Total Return / Sharpe / Max Drawdown / Win Rate"]
         J --> N["quantlab.screening.param_sweep"]
-        N -->|Grid Search Sweep| O[Sensitivity Matrix & Report]
+        N -->|"Grid Search Sweep"| O["Sensitivity Matrix & Report"]
     end
 
-    style Data Pipeline fill:#1e293b,stroke:#3b82f6,stroke-width:2px,color:#fff
-    style Indicator Engine fill:#0f172a,stroke:#06b6d4,stroke-width:2px,color:#fff
-    style Strategy Layer fill:#1e1b4b,stroke:#8b5cf6,stroke-width:2px,color:#fff
-    style Simulation & Screening fill:#064e3b,stroke:#10b981,stroke-width:2px,color:#fff
+    style Data fill:#1e293b,stroke:#3b82f6,stroke-width:2px,color:#fff
+    style Indicators fill:#0f172a,stroke:#06b6d4,stroke-width:2px,color:#fff
+    style Signals fill:#1e1b4b,stroke:#8b5cf6,stroke-width:2px,color:#fff
+    style Simulation fill:#064e3b,stroke:#10b981,stroke-width:2px,color:#fff
 ```
 
 ---
