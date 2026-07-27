@@ -1,9 +1,9 @@
 <div align="center">
-  <img src="docs/assets/banner.jpg" alt="QuantLab Banner" width="850" style="max-width: 100%; border-radius: 12px; margin-bottom: 20px;" />
+  <img src="docs/assets/banner_v2.jpg" alt="QuantLab Banner" width="850" style="max-width: 100%; border-radius: 12px; margin-bottom: 20px;" />
 
   <br />
 
-  <img src="docs/assets/logo.jpg" alt="QuantLab Logo" width="140" height="140" style="border-radius: 28px; box-shadow: 0 8px 24px rgba(0,0,0,0.25);" />
+  <img src="docs/assets/logo_v2.jpg" alt="QuantLab Logo" width="140" height="140" style="border-radius: 28px; box-shadow: 0 8px 24px rgba(0,0,0,0.25);" />
 
   <h1>QuantLab ⚡</h1>
 
@@ -64,7 +64,7 @@
 QuantLab utilizes a decoupled modular pipeline architecture. Market data flows downwards through vectorized calculation layers into backtesting portfolio simulation and parameter screening engines.
 
 <div align="center">
-  <img src="docs/assets/workflow.jpg" alt="QuantLab Architecture Workflow" width="850" style="max-width: 100%; border-radius: 12px;" />
+  <img src="docs/assets/workflow_v2.jpg" alt="QuantLab Architecture Workflow" width="850" style="max-width: 100%; border-radius: 12px;" />
 </div>
 
 <br />
