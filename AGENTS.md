@@ -1,10 +1,13 @@
 # AGENTS.md
 
 ## Project Purpose
-This project is a quantitative backtesting system built around vectorbt,
-eventually connecting to Bybit (falling back to Binance for historical data
-where Bybit lacks it) for market data. It is being built incrementally, one
-capability at a time, across multiple sessions.
+This project is a quantitative backtesting system built around vectorbt.
+Historical OHLCV data for backtesting is sourced from Binance (chosen for
+historical data quality/depth). Bybit is reserved for a later layer:
+live/paper-trading execution only, once a strategy has passed backtesting
+and validation. Bybit is not used for historical data at any point. The
+project is being built incrementally, one capability at a time, across
+multiple sessions.
 
 ## Tooling Rules (non-negotiable)
 - This project uses `uv` exclusively for all environment and package management.

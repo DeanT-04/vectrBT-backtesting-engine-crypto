@@ -10,6 +10,7 @@ dependencies = [
     "ccxt>=4.5.68",
     "numpy>=2.4.6",
     "pandas>=3.0.5",
+    "pyarrow>=25.0.0",
     "python-dotenv>=1.2.2",
     "vectorbt>=1.1.0",
 ]
