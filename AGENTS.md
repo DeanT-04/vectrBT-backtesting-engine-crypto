@@ -50,7 +50,9 @@ multiple sessions.
    |       `-- validation/    (future: walk-forward + Monte Carlo validation)
    |-- tests/
    |   `-- ...                (mirrors src/quantlab/, one test file per module)
-   `-- data/                  (local cache of downloaded market data, gitignored)
+   |-- data/                  (local cache of downloaded market data, gitignored)
+   `-- scripts/               (manual/runnable entry points, not library
+                              code — e.g. demo runs, one-off reports)
 
    Note: the "(future)" subfolders under src/quantlab/ do not exist yet.
    Only create them when a later prompt explicitly instructs you to build
@@ -71,6 +73,11 @@ At the end of every task, report back using exactly this structure:
 - **Tests added:** bullet list of new test cases, each with a one-line
   description of what it verifies
 - **Test run output:** the full, verbatim output of `uv run pytest`
+- **Manual run output (if applicable):** if the task produces a
+  runnable script or CLI entry point, actually execute it for real
+  (real data, real network calls where relevant — not mocked) and
+  include the full, verbatim console output. This is separate from and
+  in addition to the automated pytest output.
 - **Scope check:** explicit confirmation that no files or folders were
   created outside what the current prompt specified, and that no unrelated
   code was modified
