@@ -94,3 +94,26 @@ treat the prompt as a normal Build Mode task under the rules above.
 validation, Monte Carlo simulation, and strategy acceptance criteria will
 be added in a later prompt, once that layer of the project is built. Do
 not invent strategy-testing behavior on your own in the meantime.)
+
+## Backlog / Future Layers
+This section tracks capabilities intentionally deferred to future sessions,
+so they survive across chat windows with no shared memory. When a layer is
+deferred, add an item here. When it's later built, remove its entry.
+
+Current backlog:
+- Expand indicator suite beyond SMA/EMA/RSI (e.g. MACD, Bollinger Bands,
+  ATR, Stochastic) using the same vectorbt-wrapper pattern established in
+  src/quantlab/indicators, once needed by a specific strategy.
+- Incremental/partial cache updates for src/quantlab/data/ohlcv.py
+  (currently only supports one full-range cache file per
+  symbol/timeframe/range; fetching only the missing days of an
+  already-partially-cached range is not yet supported).
+- Walk-forward validation harness (rolling training windows, out-of-sample
+  testing, aggregation across folds).
+- Monte Carlo simulation on trade sequences/returns.
+- Config/settings module for shared constants (default symbol, timeframe,
+  fee/slippage assumptions) if hardcoded values start duplicating across
+  modules.
+- Bybit connector for live/paper-trading execution (only after a strategy
+  has passed backtesting and validation).
+
