@@ -137,4 +137,16 @@ Current backlog:
   modules.
 - Bybit connector for live/paper-trading execution (only after a strategy
   has passed backtesting and validation).
+- Multi-period manual screening script (previously planned) was
+  intentionally not built — proper walk-forward validation (this layer)
+  supersedes it by providing rigorous, sequential out-of-sample evidence
+  across multiple periods automatically, rather than a hand-picked
+  diagnostic.
+- Walk-forward per-fold config selection currently uses sharpe_ratio as
+  the sole selection criterion (see src/quantlab/validation/
+  walk_forward.py). Prior research found Sharpe has weak predictive power
+  for real out-of-sample performance compared to drawdown/volatility-based
+  measures. Once real walk-forward results exist, revisit whether
+  selection should weight drawdown/consistency more heavily.
+
 
