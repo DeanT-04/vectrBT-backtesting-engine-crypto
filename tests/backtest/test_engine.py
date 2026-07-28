@@ -179,4 +179,49 @@ def test_single_bar_series_no_forced_exit() -> None:
     assert metrics["win_rate"] == 0.0
 
 
+def test_real_cached_data_no_op_and_open_position_drift() -> None:
+    """Test using real cached data for both already-closed (no-op) and open position scenarios.
+
+    Verifies that:
+    1. When a position is already closed before the final bar (e.g. Fast=5, Slow=20),
+       run_backtest produces a bit-for-bit identical total_return compared to raw
+       vbt.Portfolio.from_signals without forced close.
+    2. When a position remains open at the final bar (e.g. Fast=20, Slow=50), trade
+       counts remain identical (because vectorbt counts open trade records), but
+       run_backtest force-closes the position on the final bar, incurring exit fees/slippage
+       and shifting total_return as expected.
+    """
+    import vectorbt as vbt
+    from quantlab.data.ohlcv import get_ohlcv
+    from quantlab.strategies.sma_crossover import generate_signals
+
+    df = get_ohlcv("BTC/USDT", "1d", "2022-01-01", "2024-01-01")
+    close = df["close"]
+
+    # 1. Closed position before final bar: Fast=5, Slow=20
+    entries_5_20, exits_5_20 = generate_signals(close, 5, 20)
+    pf_old_5_20 = vbt.Portfolio.from_signals(
+        close=close, entries=entries_5_20, exits=exits_5_20, init_cash=10000.0, fees=0.001, slippage=0.001
+    )
+    pf_new_5_20 = run_backtest(
+        close=close, entries=entries_5_20, exits=exits_5_20, init_cash=10000.0, fees=0.001, slippage=0.001
+    )
+    # Already-closed position: total_return must be bit-for-bit identical (exact float equality)
+    assert pf_new_5_20.total_return() == pf_old_5_20.total_return()
+
+    # 2. Open position at final bar: Fast=20, Slow=50
+    entries_20_50, exits_20_50 = generate_signals(close, 20, 50)
+    pf_old_20_50 = vbt.Portfolio.from_signals(
+        close=close, entries=entries_20_50, exits=exits_20_50, init_cash=10000.0, fees=0.001, slippage=0.001
+    )
+    pf_new_20_50 = run_backtest(
+        close=close, entries=entries_20_50, exits=exits_20_50, init_cash=10000.0, fees=0.001, slippage=0.001
+    )
+    # Trade counts are identical because vectorbt counts both open and closed trade records
+    assert pf_new_20_50.trades.count() == pf_old_20_50.trades.count() == 9
+    # Position was open at final bar, so forced-close charges exit fees/slippage on final bar, causing total_return to shift
+    assert pf_new_20_50.total_return() != pf_old_20_50.total_return()
+
+
+
 

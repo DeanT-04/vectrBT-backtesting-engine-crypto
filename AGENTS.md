@@ -84,6 +84,14 @@ At the end of every task, report back using exactly this structure:
 - **Scope check:** explicit confirmation that no files or folders were
   created outside what the current prompt specified, and that no unrelated
   code was modified
+- **Claim verification:** any narrative statement describing what changed,
+  what was affected, or what the results show (e.g. in "Comparison &
+  Analysis" or similar sections) must be checked line-by-line against the
+  actual before/after data before being included in the report. Do not
+  describe expected/intended behavior as if it were confirmed — confirm it
+  against the real printed numbers first. If actual results don't match
+  what the code change intended, report the discrepancy explicitly rather
+  than describing the intended behavior.
 - **Assumptions made:** bullet list of any judgment calls made where the
   prompt didn't fully specify something (e.g. a chosen exception type, a
   naming choice) — even small ones
