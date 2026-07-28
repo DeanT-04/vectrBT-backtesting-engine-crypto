@@ -36,12 +36,13 @@ def test_main_success(synthetic_ohlcv_df: pd.DataFrame, capsys: pytest.CaptureFi
         captured = capsys.readouterr()
         assert "SMA CROSSOVER PARAMETER SCREENING REPORT" in captured.out
         assert "NOTE: This is an exploratory, in-sample sweep" in captured.out
+        assert "Buy & Hold Benchmark:" in captured.out
         assert "Best by Sharpe:" in captured.out
         assert "Worst by Sharpe:" in captured.out
 
 
-def test_main_calls_run_parameter_sweep(synthetic_ohlcv_df: pd.DataFrame):
-    """Verify main calls run_parameter_sweep from the screening library module."""
+def test_main_calls_run_parameter_sweep(synthetic_ohlcv_df: pd.DataFrame, capsys: pytest.CaptureFixture[str]):
+    """Verify main calls run_parameter_sweep and run_buy_and_hold_benchmark."""
     mock_results = [
         {
             "fast_window": 5,
@@ -53,11 +54,23 @@ def test_main_calls_run_parameter_sweep(synthetic_ohlcv_df: pd.DataFrame):
             "total_trades": 4,
         }
     ]
+    mock_bnh = {
+        "total_return": 0.5,
+        "sharpe_ratio": 1.2,
+        "max_drawdown": -0.1,
+        "win_rate": 1.0,
+        "total_trades": 1,
+    }
     with patch("scripts.param_sweep_demo.get_ohlcv", return_value=synthetic_ohlcv_df):
-        with patch("scripts.param_sweep_demo.run_parameter_sweep", return_value=mock_results) as mock_sweep:
-            results = main(["--fast-windows", "5", "--slow-windows", "20"])
-            mock_sweep.assert_called_once()
-            assert results == mock_results
+        with patch("scripts.param_sweep_demo.run_buy_and_hold_benchmark", return_value=mock_bnh) as mock_bnh_func:
+            with patch("scripts.param_sweep_demo.run_parameter_sweep", return_value=mock_results) as mock_sweep:
+                results = main(["--fast-windows", "5", "--slow-windows", "20"])
+                mock_bnh_func.assert_called_once()
+                mock_sweep.assert_called_once()
+                assert results == mock_results
+                captured = capsys.readouterr()
+                assert "Buy & Hold Benchmark:" in captured.out
+
 
 
 def test_main_get_ohlcv_exception_handled(capsys: pytest.CaptureFixture[str]):

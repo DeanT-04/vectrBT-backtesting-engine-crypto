@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import pytest
-from quantlab.backtest.engine import extract_metrics, run_backtest
+from quantlab.backtest.engine import extract_metrics, run_backtest, run_buy_and_hold_benchmark
 
 
 def test_simple_profitable_trade() -> None:
@@ -91,3 +91,34 @@ def test_metrics_return_plain_python_types() -> None:
 
     for key, value in metrics_empty.items():
         assert type(value) in (float, int, type(None)), f"Key {key} has non-plain type {type(value)}"
+
+
+def test_buy_and_hold_benchmark_known_prices() -> None:
+    """Test buy-and-hold return on a synthetic price series with known start and end price."""
+    dates = pd.date_range("2023-01-01", periods=2, freq="D")
+    close = pd.Series([100.0, 200.0], index=dates)
+    fees = 0.001
+    slippage = 0.001
+
+    metrics = run_buy_and_hold_benchmark(close, init_cash=10000.0, fees=fees, slippage=slippage)
+
+    expected_return = (1.0 - fees) ** 2 * ((1.0 - slippage) / (1.0 + slippage)) * (200.0 / 100.0) - 1.0
+
+    assert metrics["total_trades"] == 1
+    assert metrics["total_return"] is not None
+    assert pytest.approx(metrics["total_return"], rel=1e-4) == expected_return
+
+
+def test_buy_and_hold_period_end_valuation() -> None:
+    """Confirm position is correctly valued at period end (constraint-3 resolution verification)."""
+    dates = pd.date_range("2023-01-01", periods=5, freq="D")
+    close = pd.Series([100.0, 110.0, 120.0, 130.0, 150.0], index=dates)
+
+    metrics = run_buy_and_hold_benchmark(close, init_cash=10000.0, fees=0.001, slippage=0.001)
+
+    assert metrics["total_trades"] == 1
+    assert metrics["total_return"] is not None
+    assert metrics["total_return"] > 0.45
+    assert metrics["win_rate"] == 1.0
+    assert metrics["sharpe_ratio"] is not None
+

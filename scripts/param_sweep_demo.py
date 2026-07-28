@@ -4,6 +4,7 @@ import argparse
 import sys
 from typing import Any
 
+from quantlab.backtest.engine import run_buy_and_hold_benchmark
 from quantlab.data.ohlcv import get_ohlcv
 from quantlab.screening.param_sweep import run_parameter_sweep
 
@@ -81,7 +82,11 @@ def _format_metric(val: float | int | None, is_percentage: bool = False) -> str:
     return str(val)
 
 
-def print_report(args: argparse.Namespace, results: list[dict[str, Any]]) -> None:
+def print_report(
+    args: argparse.Namespace,
+    results: list[dict[str, Any]],
+    bnh_metrics: dict[str, Any] | None = None,
+) -> None:
     print("=" * 75)
     print("           SMA CROSSOVER PARAMETER SCREENING REPORT          ")
     print("=" * 75)
@@ -93,10 +98,28 @@ def print_report(args: argparse.Namespace, results: list[dict[str, Any]]) -> Non
     print(f"Slippage:       {args.slippage * 100:.2f}%")
     print("-" * 75)
     print(
-        "NOTE: This is an exploratory, in-sample sweep across historical data. "
-        "Results should not be used for live trading without out-of-sample validation."
+        "NOTE: This is an exploratory, in-sample sweep on a single static date range. "
+        "It is NOT strategy validation. Picking the best-looking result here and "
+        "treating it as 'the' strategy would be overfitting. Walk-forward and "
+        "Monte Carlo validation (backlog items) are required before trusting any "
+        "specific configuration."
     )
     print("-" * 75)
+
+    if bnh_metrics:
+        ret_str = _format_metric(bnh_metrics.get("total_return"), is_percentage=True)
+        sharpe_str = _format_metric(bnh_metrics.get("sharpe_ratio"))
+        mdd_str = _format_metric(bnh_metrics.get("max_drawdown"), is_percentage=True)
+        wr_str = _format_metric(bnh_metrics.get("win_rate"), is_percentage=True)
+        trades_str = _format_metric(bnh_metrics.get("total_trades"))
+
+        print("Buy & Hold Benchmark:")
+        print(f"  Total Return:   {ret_str}")
+        print(f"  Sharpe Ratio:   {sharpe_str}")
+        print(f"  Max Drawdown:   {mdd_str}")
+        print(f"  Win Rate:       {wr_str}")
+        print(f"  Total Trades:   {trades_str}")
+        print("-" * 75)
 
     if not results:
         print("No valid parameter combinations evaluated.")
@@ -157,6 +180,12 @@ def main(args: list[str] | None = None) -> list[dict[str, Any]]:
             until=parsed_args.until,
         )
         close = df["close"]
+        bnh_metrics = run_buy_and_hold_benchmark(
+            close=close,
+            init_cash=parsed_args.init_cash,
+            fees=parsed_args.fees,
+            slippage=parsed_args.slippage,
+        )
         results = run_parameter_sweep(
             close=close,
             fast_windows=parsed_args.fast_windows,
@@ -165,11 +194,12 @@ def main(args: list[str] | None = None) -> list[dict[str, Any]]:
             fees=parsed_args.fees,
             slippage=parsed_args.slippage,
         )
-        print_report(parsed_args, results)
+        print_report(parsed_args, results, bnh_metrics)
         return results
     except Exception as e:
         print(f"Error executing parameter sweep demo: {e}", file=sys.stderr)
         sys.exit(1)
+
 
 
 if __name__ == "__main__":
