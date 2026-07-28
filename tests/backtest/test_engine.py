@@ -122,3 +122,61 @@ def test_buy_and_hold_period_end_valuation() -> None:
     assert metrics["win_rate"] == 1.0
     assert metrics["sharpe_ratio"] is not None
 
+
+def test_closed_before_end_is_no_op() -> None:
+    """Test that a strategy closing before the final bar is unaffected by force-close (no phantom trades or double fees)."""
+    dates = pd.date_range("2023-01-01", periods=5, freq="D")
+    close = pd.Series([100.0, 105.0, 110.0, 115.0, 120.0], index=dates)
+    entries = pd.Series([True, False, False, False, False], index=dates)
+    exits = pd.Series([False, False, True, False, False], index=dates)  # Exit at bar 2
+
+    portfolio = run_backtest(close, entries, exits, init_cash=10000.0, fees=0.001, slippage=0.001)
+    metrics = extract_metrics(portfolio)
+
+    assert metrics["total_trades"] == 1
+    assert metrics["win_rate"] == 1.0
+    # Expected return for trade entered at 100 on bar 0 and exited at 110 on bar 2
+    expected_return = (1.0 - 0.001) ** 2 * ((1.0 - 0.001) / (1.0 + 0.001)) * (110.0 / 100.0) - 1.0
+    assert metrics["total_return"] is not None
+    assert pytest.approx(metrics["total_return"], rel=1e-4) == expected_return
+
+
+def test_position_still_open_at_end_gets_force_closed() -> None:
+    """Test that an open position at the final bar is force-closed, charging exit fees and counting as a completed trade."""
+    dates = pd.date_range("2023-01-01", periods=5, freq="D")
+    close = pd.Series([100.0, 105.0, 110.0, 115.0, 120.0], index=dates)
+    entries = pd.Series([True, False, False, False, False], index=dates)
+    exits = pd.Series([False, False, False, False, False], index=dates)  # Never exited by strategy
+
+    pf_with_fees = run_backtest(close, entries, exits, init_cash=10000.0, fees=0.001, slippage=0.001)
+    pf_zero_fees = run_backtest(close, entries, exits, init_cash=10000.0, fees=0.0, slippage=0.0)
+
+    metrics_with_fees = extract_metrics(pf_with_fees)
+    metrics_zero_fees = extract_metrics(pf_zero_fees)
+
+    # Position must be counted as a completed trade and win_rate must be calculated
+    assert metrics_with_fees["total_trades"] == 1
+    assert metrics_with_fees["win_rate"] == 1.0
+
+    # Exit fees must be charged, so zero fees return must be strictly greater than fee-bearing return
+    assert metrics_zero_fees["total_return"] is not None
+    assert metrics_with_fees["total_return"] is not None
+    assert metrics_zero_fees["total_return"] > metrics_with_fees["total_return"]
+
+
+def test_single_bar_series_no_forced_exit() -> None:
+    """Test single-bar edge case (len(close) == 1): no forced exit added on a single-bar series."""
+    dates = pd.date_range("2023-01-01", periods=1, freq="D")
+    close = pd.Series([100.0], index=dates)
+    entries = pd.Series([True], index=dates)
+    exits = pd.Series([False], index=dates)
+
+    portfolio = run_backtest(close, entries, exits, init_cash=10000.0, fees=0.001, slippage=0.001)
+    metrics = extract_metrics(portfolio)
+
+    # Position is opened on bar 0 but not force-closed on bar 0 (preventing entry and exit cancelling on same bar)
+    assert metrics["total_trades"] == 1
+    assert metrics["win_rate"] == 0.0
+
+
+

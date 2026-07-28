@@ -15,6 +15,12 @@ def run_backtest(
 ) -> vbt.Portfolio:
     """Run a vectorbt backtest from price and entry/exit signals.
 
+    If len(close) > 1, any open position is automatically force-closed on the
+    final bar of the period before running the portfolio simulation. This
+    ensures all backtests reflect fully realized round-trip fees/slippage and
+    closed-trade metrics (win_rate, total_trades) consistently across strategy
+    runs and benchmarks.
+
     Args:
         close: Pandas Series of close prices.
         entries: Boolean Series of entry signals aligned with close index.
@@ -32,10 +38,14 @@ def run_backtest(
     if not close.index.equals(entries.index) or not close.index.equals(exits.index):
         raise ValueError("close, entries, and exits must share the same index.")
 
+    exits_copy = exits.copy()
+    if len(close) > 1:
+        exits_copy.iloc[-1] = True
+
     return vbt.Portfolio.from_signals(
         close=close,
         entries=entries,
-        exits=exits,
+        exits=exits_copy,
         init_cash=init_cash,
         fees=fees,
         slippage=slippage,
@@ -91,17 +101,9 @@ def run_buy_and_hold_benchmark(
     """Run a buy-and-hold benchmark backtest for a given close price series.
 
     Constructs entry/exit signals representing buying at the first bar and holding
-    for the entire period.
-
-    Note on vectorbt open-position handling:
-    vectorbt's ``total_return()`` automatically marks an unclosed position to
-    market at the final close price even if no explicit exit signal is given.
-    However, setting an explicit exit signal on the last bar (``exits.iloc[-1] = True``
-    when len(close) > 1) ensures that:
-    1. Both entry and exit transaction costs (fees and slippage) are applied,
-       providing a true round-trip apples-to-apples comparison with strategy runs.
-    2. Vectorbt registers a completed trade, so closed-trade metrics like
-       ``win_rate`` are populated rather than returning NaN/None.
+    for the entire period. Relies on run_backtest()'s built-in forced-close-at-end
+    behavior (when len(close) > 1) to realize round-trip fees/slippage and
+    populate closed-trade metrics.
 
     Args:
         close: Pandas Series of close prices.
@@ -117,8 +119,6 @@ def run_buy_and_hold_benchmark(
 
     if len(close) > 0:
         entries.iloc[0] = True
-        if len(close) > 1:
-            exits.iloc[-1] = True
 
     portfolio = run_backtest(
         close=close,
@@ -129,4 +129,5 @@ def run_buy_and_hold_benchmark(
         slippage=slippage,
     )
     return extract_metrics(portfolio)
+
 
